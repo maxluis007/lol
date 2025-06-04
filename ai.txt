@@ -1,0 +1,86 @@
+method 1:
+
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.model_selection import train_test_split
+from sklearn.naive_bayes import MultinomialNB
+from sklearn.metrics import accuracy_score
+
+dataset =pd.read_csv('spam.csv',encoding='latin-1')
+dataset.head()
+column_to_remove =['Unnamed: 2','Unnamed: 3','Unnamed: 4']
+dataset =dataset.drop(column_to_remove,axis=1)
+
+
+dataset.rename(columns={'v1':'label','v2':'email'},inplace=True)
+dataset.head()
+vectorizer = CountVectorizer()
+x= vectorizer.fit_transform(dataset['label'])
+
+x_train,x_test,y_train,y_test = train_test_split(x,dataset['email'],test_size=0.2)
+model=MultinomialNB()
+model.fit(x_train,y_train)
+
+ypred=model.predict(x_test)
+accuracy =accuracy_score(y_test,ypred)
+print(accuracy)
+def predictMessage(message):
+    messageVector =vectorizer.transform([message])
+    prediction =model.predict(messageVector)
+    return 'spam' if prediction[0]== 1 else 'ham'
+
+userMessage =input("enter your email")
+prediction =predictMessage(userMessage)
+print(f'the message is :{prediction}')
+
+
+method2:
+
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+ 
+df=pd.read_csv('spam.csv',encoding='ISO-8859-1')  
+df.shape
+df.columns
+df.info()
+column_to_remove = ['Unnamed: 2','Unnamed: 3','Unnamed: 4']
+df=df.drop(column_to_remove,axis=1)
+df.head()
+df.info()
+df.describe()
+df.rename(columns={'v1':'label','v2':'Email'},inplace=True)
+df.head()
+df[df.duplicated()]
+df.drop_duplicates(inplace=True)
+df[df.duplicated()]
+df['label'].value_counts()
+sns.countplot(data=df,x='label',palette='Set2')
+plt.xlabel('label')
+plt.ylabel('count')
+plt.title('Count Plot')
+plt.show()
+df['label'].replace({'ham':0,'spam':1},inplace=True)
+Df
+X=df['Email']
+Y=df['label']
+print(X,Y)
+from sklearn.model_selection import train_test_split
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics import confusion_matrix,accuracy_score,classification_report,accuracy_score
+from sklearn.linear_model import LogisticRegression
+from sklearn.svm import SVC
+import nltk
+from nltk.corpus import stopwords
+from collections import Counter
+X_train,X_test,y_train,y_test=train_test_split(X,Y, random_state=42,test_size=0.2)
+feature_extraction = TfidfVectorizer(min_df=1, stop_words='english',lowercase=True)
+X_train_features = feature_extraction.fit_transform(X_train)
+X_test_features = feature_extraction.transform(X_test)
+X_train_features
+model=LogisticRegression()
+model.fit(X_train_features,y_train)
+
+
