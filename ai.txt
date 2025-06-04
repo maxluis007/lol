@@ -97,3 +97,62 @@ if prediction[0] == 1:
 else:
     print("Spam Mail")
 
+
+house_pred:
+# %pip install pandas
+# pip install pandas numpy matplotlib seaborn
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+df=pd.read_csv('housing.csv')
+
+
+df
+df.shape
+
+df.info()
+
+df.columns
+df['ocean_proximity'].value_counts()
+
+df.describe()
+
+
+df['housing_median_age'].value_counts()
+
+df['ocean_proximity'].value_counts()
+
+df.isnull().sum()
+
+df.dropna(inplace=True)
+
+df.isnull().sum()
+
+df[df['total_bedrooms'].isnull()==True]
+
+
+df.drop(['ocean_proximity'],axis=1,inplace=True)
+
+df.columns
+X=df.drop(['median_house_value'],axis=1)
+y=df['median_house_value']
+X,y
+# pip install scikit-learn
+from sklearn.model_selection import train_test_split
+X_train,X_test,y_train,y_test=train_test_split(X,y,test_size=0.2,random_state=42)
+
+
+print(X_train.shape,y_train.shape,X_test.shape,y_test.shape)
+
+
+from sklearn.ensemble import RandomForestRegressor
+model=RandomForestRegressor()
+
+
+model.fit(X_train,y_train)
+
+y_pred=model.predict(X_test)
+
+print(y_pred,y_test)
