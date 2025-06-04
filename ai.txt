@@ -82,5 +82,18 @@ X_test_features = feature_extraction.transform(X_test)
 X_train_features
 model=LogisticRegression()
 model.fit(X_train_features,y_train)
-
+SVC_model=SVC(kernel='linear')
+SVC_model.fit(X_train_features,y_train)
+y_predict=SVC_model.predict(X_test_features)
+Accuracy =accuracy_score(y_test,y_predict)*100
+print(f"Accuracy: {Accuracy:.2f} %")
+classification_rep=classification_report(y_test,y_predict)
+print(classification_rep)
+input_your_mail ="Dear John, I hope this email finds you well. Attached is the report you requested for our upcoming meeting. Please review it at your convenience"
+input_data_features = feature_extraction.transform([input_your_mail])
+prediction = model.predict(input_data_features)
+if prediction[0] == 1:
+    print("Ham Mail")
+else:
+    print("Spam Mail")
 
